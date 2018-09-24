@@ -1,4 +1,4 @@
-# Use Amazon EC2 to train a large machine learning model on a budget
+# Use Amazon EC2 to train a machine learning model on a budget (by using Spot Instance)
 
 In this tutorial, I will walk through how to leverage Amazon EC2 to train the machine learning model in an inexpensive way. With a tight budget, I use this approach to work with Kaggle competition and to experiment deep learning techniques. Note: this tutorial is suitable for a person who uses Windows and wants to access to a massive computational resource for training on large data-set. 
 
