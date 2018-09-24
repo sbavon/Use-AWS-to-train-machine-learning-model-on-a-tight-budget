@@ -1,6 +1,6 @@
-# Use-AWS-to-train-machine-learning-model-on-a-tight-budget
+# Use Amazon EC2 to train a large machine learning model on a budget
 
-In this tutorial, I will walk through how to leverage Amazon EC2 to train the machine learning model in an inexpensive way. I have adopt this approach to work with Kaggle competition and to experiment deep learning techniques. This tutorial is suitable for a person who uses Windows and wants to access to a massive computational resource for training on large data-set. The approach can be summarized as picture below:
+In this tutorial, I will walk through how to leverage Amazon EC2 to train the machine learning model in an inexpensive way. With a tight budget, I use this approach to work with Kaggle competition and to experiment deep learning techniques. Note: this tutorial is suitable for a person who uses Windows and wants to access to a massive computational resource for training on large data-set. 
 
 << image >>
 
