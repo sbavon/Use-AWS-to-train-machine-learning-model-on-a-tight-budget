@@ -62,54 +62,65 @@ Then go to SSH >> Auth and Browse the key that you converted. Click "Open" and t
 
 ## Step 2: Setup the python environment and Jupyter Notebook
 
-Firstly, we need to get the link to download Anaconda3. You can look at this [link](https://repo.continuum.io/archive/) and save link address of the file. In my case, I will download and install Anaconda3-5.2.0-Linux-x86_64.sh 
+In this part, I found that there is a great walkthrough in the internet already. Please follow [this](https://medium.com/@alexjsanchez/python-3-notebooks-on-aws-ec2-in-15-mostly-easy-steps-2ec5e662c6c6)
 
-In PuTTY, run the following commands to download the file from the link
-
+Apart from Anaconda and jupyter, you can install additional libraries such as Lightgbm and HDBscan via the terminal. 
+ex.
 ```
-wget https://repo.continuum.io/archive/Anaconda3-5.2.0-Linux-x86_64.sh
-```
-
-and then run the command to install the package. Follows the instruction and type "yes" to accept the license and to append the path
-
-```
-bash Anaconda3-5.2.0-Linux-x86_64.sh
-```
-<< image 3>>
-<< image 4>>
-
-After finish installation, close and reopen the terminal to switch to anaconda environment. You can command *which python* to check the python version
-
-I will also install needed libraries such as Lightgbm and HDBscan
-
-```
-conda install -c conda-forge lightgbm
+conda install -c conda-forge lightgbm 
 pip install hdbscan
 ```
 
-Next, we will create password to access jupyter notebook
-```
-ipython
-from IPython.lib import passwd
-passwd()
-```
-You will be asked to type in the password and it will provide a SHA hash. Please sure that you save this somewhere as you need to refer to this hash in the future
+## Step 3: Transfer file to the EC2 instance 
+I normally use *FileZilla* application to transfer file between a local machine and EC2 instance. Since I mainly use Google Drive to store a very large file, I also use *gdown* library to download the file from google drive to the instance.  
 
-exit the ipython
+### Transfer file using FileZilla
+1. Download the [FileZilla Client](https://filezilla-project.org/), and install the program 
+2. Open the program and click setting according to the picture below
+<< image 12.1>>
+3. Select SFTP and add key file (You can use key file generated in step 1.1) and hit 'ok'
+<< image 12.2>>
+4. Click top-left icon (Open the site manager) and "New Site"
+<< image 12.3>>
+5. in *Host* field, fill in the public DNS of the instance, and fill in the *user* field. Click 'connect'
+<< image 12.4>>
+6. Then, you will see the directory of the instance, which allows you to transfer file to it
+<< image 12.5>>
+
+### Download file from Google Drive
+1. install *gdown* library
 ```
-exit
+pip install gdown
+```
+2. open jupyter notebook and write this following code
+```
+import gdown
+
+url = 'https://drive.google.com/uc?id=[ID]'
+output = '[filename]'
+gdown.download(url, output, quiet=False)
 ```
 
-Then, we will configure Jupyter notebook and generate the key
+3. you need to replace [ID] and [filename]. To obtain the ID, open the google drive, right click on the file, and select *get shareable link* 
+<<image 21>>
+Then you will get the link, which contain the ID of the document. Make sure that the file is set as *Anyone with the link...*
+<< image 22>>
 
-```
-jupyter notebook --generate-config
-mkdir certs
-cd certs
-sudo openssl req -x509 -nodes -days 365 -newkey rsa:1024 -keyout mycert.pem -out mycert.pem
-cd
-```
+4. run the code
 
+So, after setting up the environment and transferring all files to the instance, it is time for you to run the code to train the model
+
+## Step 4: Save the result and terminate the instance
+After training the model, I normally use *pickle* to store the trained model
 ```
-vim .jupyter/jupyter_notebook_config.py
+import pickle
+with open("myModel.pkl", 'wb') as pickle_file:
+  pickle.dump(model, pickle_file)
 ```
+Then I transfer the model back to my local machine through *FileZilla*
+
+Next, I terminate the instance to stop charging
+<<image 23>> 
+
+And that's it. It appears that there are many tasks to setup the environment. However, if you are familiar with the process, it can be very fast to setup and you can save your money up to 60-70%!!!
+
