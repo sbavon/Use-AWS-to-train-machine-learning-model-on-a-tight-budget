@@ -10,7 +10,7 @@ In this tutorial, I will walk through how to leverage Amazon EC2 to train the ma
 
 To save up cost, you need to make everything ready for training before launching an EC2 instance.
 The files you need to prepare may include, but not limited to, training data, ipython script, and a list of dependencies. 
-So, when you launch the instance, you can jump into training model with less extra works.
+So, when you launch the instance, you can jump into training with less extra works.
 
 ## Step 1: Request EC2 Spot instance
 
@@ -34,7 +34,7 @@ You will see that there are many fields in this page, but normally, I will leave
 * `AMI`: Normally I choose Ubuntu 14.04 or Linux. But it is up to you to choose software configuration
 * `EBS volume`: I change the size to 30GB, which is in the free-tier 
 * `Security group`: This will enable you to remote connect to this instance. If you have never created security group before, you need to create a new one:
-	1. click *create new security group* on the right of the field. It will direct to the new page. Then click "create security group" 
+	1. click `create new security group` on the right of the field. It will direct to the new page. Then click `create security group` 
 	
 		![securitygroup](Images/0_2_create_new_security_group.PNG)
 		
@@ -47,16 +47,16 @@ You will see that there are many fields in this page, but normally, I will leave
 	3. go back to the configuration page, and select the security group that you just created
 
 * `Key pair name`: If you don't have any previous key-pair, you should create a new one following below instructions
-	1. click *create new key pair*. It will direct to the new page. click "Create key pair"
-	2. fill in the key name and click "create". You will also need to save the key for later use.
+	1. click `create new key pair`. It will direct to the new page. click `Create key pair`
+	2. fill in the key name and click `create`. You will also need to save the key for later use.
 		
 		![keypair](Images/0_5_keypare.PNG)
 
-* `Maximum price`: select "Set your max price (per instance/hour)" and set the maximum price that you want
+* `Maximum price`: select `Set your max price (per instance/hour)` and set the maximum price you want to pay
 	
 	![maxprice](Images/0_5_1_price.PNG)
 
-After finish configuration, click "launch". You will see your new instance in instance tab in EC2 dashboard
+After finish configuration, click `launch`. You will see your new instance in instance tab in EC2 dashboard
 
 ## Step 2: Connect to the instance
 
@@ -72,8 +72,8 @@ pip install hdbscan
 
 ## Step 3: Transfer file to the EC2 instance
 
-I normally use *FileZilla* application to transfer file between a local machine and EC2 instance. 
-I also use Google Drive to store very large files, and download these files to the instance via *gdown* library.
+I normally use **FileZilla** application to transfer file between a local machine and EC2 instance. 
+I also use Google Drive to store very large files, and download these files to the instance via **gdown** library.
 
 ### Transfer file using FileZilla
 
@@ -97,10 +97,13 @@ I also use Google Drive to store very large files, and download these files to t
 
 ### Download file from Google Drive
 1. install *gdown* library
+
 	```
 	pip install gdown
 	```
+
 2. open jupyter notebook and write this following code
+	
 	```
 	import gdown
 
@@ -109,11 +112,11 @@ I also use Google Drive to store very large files, and download these files to t
 	gdown.download(url, output, quiet=False)
 	```
 
-3. you need to replace [ID] and [filename] in the code above. To obtain the ID, open the google drive, right click on the file, and select *get shareable link* 
+3. you need to replace [ID] and [filename] in the code above. To obtain the ID, open the google drive, right click on the file, and select `get shareable link` 
 	
 	![gdown1](Images/21_gdrive.png)
 
-	Then you will get the link, which contain the ID of the document. Make sure that the file is set as *Anyone with the link...*
+	Then you will get the link, which contain the ID of the document. Make sure that the file is set as **Anyone with the link...**
 	
 	![gdown1](Images/22_shareablelink.PNG)
 
@@ -123,7 +126,7 @@ After setting up the environment and transferring all files to the instance, it 
 
 ## Step 4: Save the result and terminate the instance
 
-After training the model, I normally use *pickle* to store the trained model
+After training the model, I normally use **pickle** to store the trained model
 
 ```
 import pickle
@@ -131,7 +134,7 @@ with open("myModel.pkl", 'wb') as pickle_file:
   pickle.dump(model, pickle_file)
 ```
 
-Then I transfer the model back to my local machine through *FileZilla*
+Then I transfer the model back to my local machine through **FileZilla**
 
 Finally, I will clear thing up by terminating the instance to stop charging
 	
